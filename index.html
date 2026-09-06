@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khaled Ashraf Elhanafi — SOC Analyst</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+    /* ===== CORE VARIABLES ===== */
+    :root {
+      --bg: #0b0f17;
+      --bg-alt: #070a10;
+      --panel: #111927;
+      --panel-2: #0c121c;
+      --border: #1f2e42;
+      --border-strong: #2c3f58;
+      --text: #e7edf6;
+      --text-muted: #8b9bb2;
+      --text-dim: #53647c;
+      --blue: #3e7fc1;
+      --blue-bright: #5fa6e3;
+      --blue-dim: #14273f;
+      --amber: #d4a04a;
+      --green: #45c97a;
+      --red: #e65a5a;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+      --maxw: 1060px;
+      --shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    /* ===== RESET & BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ===== CYBER NEON ANIMATED BACKGROUND ===== */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(62, 127, 193, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(62, 127, 193, 0.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+      animation: bgGridMove 10s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes bgGridMove {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      100% {
+        transform: translate(48px, 48px);
+      }
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(95, 166, 227, 0.6) 0, transparent 4px),
+        radial-gradient(circle at 70% 60%, rgba(95, 166, 227, 0.5) 0, transparent 5px),
+        radial-gradient(circle at 40% 80%, rgba(95, 166, 227, 0.4) 0, transparent 6px),
+        radial-gradient(circle at 90% 20%, rgba(95, 166, 227, 0.5) 0, transparent 4px),
+        radial-gradient(circle at 10% 75%, rgba(95, 166, 227, 0.4) 0, transparent 5px);
+      background-size: 500px 500px;
+      animation: bgNodesFloat 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgNodesFloat {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      100% {
+        transform: translate(-80px, 60px);
+      }
+    }
+
+    /* ===== MOVING LINES ===== */
+    .l1,
+    .l2,
+    .l3 {
+      position: fixed;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue-bright), transparent);
+      z-index: 0;
+      pointer-events: none;
+      animation: lineTravel 3s linear infinite;
+    }
+
+    .l1 {
+      top: 30%;
+      left: 0;
+      width: 300px;
+      animation-delay: 0s;
+    }
+
+    .l2 {
+      top: 65%;
+      left: 20%;
+      width: 450px;
+      animation-delay: 1s;
+    }
+
+    .l3 {
+      top: 80%;
+      left: 50%;
+      width: 200px;
+      animation-delay: 2s;
+    }
+
+    @keyframes lineTravel {
+      0% {
+        transform: translateX(-200%);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateX(1200%);
+        opacity: 0;
+      }
+    }
+
+    /* ===== SCANLINE ===== */
+    .scanline {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue-bright) 15%, var(--blue-bright) 85%, transparent);
+      box-shadow: 0 0 18px 3px rgba(95, 166, 227, 0.6);
+      opacity: 0.4;
+      animation: scan 3.5s linear infinite;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    @keyframes scan {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+
+      5% {
+        opacity: 0.4;
+      }
+
+      95% {
+        opacity: 0.4;
+      }
+
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .scanline,
+      body::before,
+      body::after,
+      .l1,
+      .l2,
+      .l3 {
+        animation: none;
+        display: none;
+      }
+    }
+
+    /* ===== LINKS ===== */
+    a {
+      color: var(--blue-bright);
+      text-decoration: none;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    a:hover {
+      color: #8fc8ff;
+      text-decoration: none;
+    }
+
+    a::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--blue-bright);
+      transition: width 0.3s ease;
+    }
+
+    a:hover::after {
+      width: 100%;
+    }
+
+    /* ===== WRAPPER ===== */
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    ::selection {
+      background: var(--blue-dim);
+      color: var(--blue-bright);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--blue-bright);
+      outline-offset: 3px;
+    }
+
+    /* ===== HEADER / NAV ===== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(11, 15, 23, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+
+    .brand .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 3px var(--blue-dim), 0 0 24px rgba(69, 201, 122, 0.35);
+      animation: pulse 2.6s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.3;
+        transform: scale(0.8);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .brand .dot {
+        animation: none;
+      }
+    }
+
+    .navlinks {
+      display: flex;
+      gap: 28px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .navlinks a {
+      color: var(--text-muted);
+      position: relative;
+      transition: color 0.3s ease;
+      letter-spacing: 0.02em;
+    }
+
+    .navlinks a::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--blue-bright);
+      transition: width 0.3s ease;
+    }
+
+    .navlinks a:hover {
+      color: var(--blue-bright);
+    }
+
+    .navlinks a:hover::after {
+      width: 100%;
+    }
+
+    .navtoggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      font-family: var(--mono);
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .navtoggle:hover {
+      background: var(--panel);
+      border-color: var(--blue-bright);
+    }
+
+    @media (max-width: 760px) {
+      .navlinks {
+        position: fixed;
+        top: 57px;
+        left: 0;
+        right: 0;
+        background: var(--bg-alt);
+        flex-direction: column;
+        gap: 0;
+        border-bottom: 1px solid var(--border);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .navlinks.open {
+        max-height: 380px;
+      }
+
+      .navlinks a {
+        padding: 14px 28px;
+        border-top: 1px solid var(--border);
+        display: block;
+      }
+
+      .navlinks a::after {
+        display: none;
+      }
+
+      .navtoggle {
+        display: block;
+      }
+    }
+
+    /* ===== HERO (الصورة كبيرة جداً ومالية المكان) ===== */
+    .hero {
+      padding: 50px 0 44px;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      /* الصورة في نص السطر والنص جنبها */
+      gap: 35px;
+      /* المسافة بين الصورة والنص */
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .avatar {
+      width: 200px;
+      /* كبرناها جداً عشان تاخد المكان ده */
+      height: 200px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--blue-bright);
+      flex-shrink: 0;
+      margin-right: 0;
+      /* شيلنا الزحف الزيادة عشان النص يقعد جنبها على طول */
+      box-shadow: 0 0 0 4px var(--blue-dim), 0 0 50px rgba(95, 166, 227, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .avatar:hover {
+      transform: scale(1.04) rotate(-1deg);
+      box-shadow: 0 0 0 4px var(--blue-dim), 0 0 70px rgba(95, 166, 227, 0.3);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* النص اللي جنب الصورة */
+    .hero-top>div:last-child {
+      flex: 1;
+      max-width: 750px;
+      margin-left: 0;
+      /* شيلنا الـ 30px عشان النص ميعدي تحت الصورة */
+    }
+
+    .status-line {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .status-line .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2.4s ease-in-out infinite;
+      box-shadow: 0 0 14px rgba(69, 201, 122, 0.5);
+    }
+
+    h1.name {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #ffffff 0%, var(--blue-bright) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .role {
+      font-family: var(--mono);
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      color: var(--blue-bright);
+      letter-spacing: 0.01em;
+      margin-top: 5px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      margin-top: 10px;
+    }
+
+    /* ===== SECTIONS ===== */
+    section {
+      padding: 56px 0;
+      border-top: 1px solid var(--border);
+      position: relative;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+
+    .section-head h2 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .section-head .highlight {
+      color: var(--blue-bright);
+    }
+
+    .section-head .counter {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      background: var(--panel);
+      padding: 2px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    /* ===== TERMINAL ===== */
+    .terminal {
+      background: var(--panel-2);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      font-family: var(--mono);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .terminal:hover {
+      border-color: var(--blue);
+      box-shadow: 0 8px 40px rgba(62, 127, 193, 0.08);
+    }
+
+    .terminal-bar {
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .terminal-bar span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border-strong);
+    }
+
+    .terminal-bar span:nth-child(1) {
+      background: #ff5f56;
+    }
+
+    .terminal-bar span:nth-child(2) {
+      background: #ffbd2e;
+    }
+
+    .terminal-bar span:nth-child(3) {
+      background: #27c93f;
+    }
+
+    .terminal-body {
+      padding: 24px 28px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .terminal-body .prompt {
+      color: var(--green);
+    }
+
+    .terminal-body .prompt-blue {
+      color: var(--blue-bright);
+    }
+
+    .terminal-body p {
+      margin-bottom: 14px;
+      font-family: var(--sans);
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .terminal-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .terminal-body .cmd-line {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--blue-bright);
+      margin-bottom: 8px;
+    }
+
+    /* ===== SKILLS ===== */
+    .skill-groups {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    @media (max-width: 780px) {
+      .skill-groups {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .skill-group {
+      background: var(--panel);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 20px 22px;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .skill-group:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(62, 127, 193, 0.08);
+    }
+
+    .skill-group h3 {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      border: 1px solid var(--border-strong);
+      padding: 5px 12px;
+      border-radius: 4px;
+      background: var(--panel-2);
+      transition: all 0.25s ease;
+    }
+
+    .tag:hover {
+      border-color: var(--blue-bright);
+      color: var(--blue-bright);
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(95, 166, 227, 0.06);
+    }
+
+    .soft-skills {
+      margin-top: 34px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .soft-skills ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px 32px;
+    }
+
+    @media (max-width: 600px) {
+      .soft-skills ul {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .soft-skills li {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .soft-skills li::before {
+      content: "◆";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--blue-bright);
+      font-size: 10px;
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--blue-bright), var(--border-strong));
+    }
+
+    .tl-item {
+      position: relative;
+      padding-bottom: 36px;
+    }
+
+    .tl-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .tl-item::before {
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 5px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2.5px solid var(--blue-bright);
+      box-shadow: 0 0 24px rgba(95, 166, 227, 0.2);
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .tl-item:hover::before {
+      transform: scale(1.25);
+      box-shadow: 0 0 40px rgba(95, 166, 227, 0.4);
+    }
+
+    .tl-item .tl-content {
+      background: var(--panel);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 22px 26px;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .tl-item .tl-content:hover {
+      border-color: var(--blue);
+      box-shadow: 0 8px 40px rgba(62, 127, 193, 0.08);
+    }
+
+    .tl-meta {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--blue-bright);
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .tl-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+
+    .tl-org {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 12px;
+    }
+
+    .tl-item ul {
+      list-style: none;
+    }
+
+    .tl-item ul li {
+      color: var(--text-muted);
+      font-size: 0.93rem;
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 6px;
+    }
+
+    .tl-item ul li::before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: var(--blue-bright);
+    }
+
+    /* ===== PROJECTS ===== */
+    .project {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 0;
+      background: var(--panel);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 26px;
+      transition: all 0.35s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .project:hover {
+      border-color: var(--blue);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 50px rgba(62, 127, 193, 0.10);
+    }
+
+    .project:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 780px) {
+      .project {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .project-media {
+      background: var(--bg-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      border-right: 1px solid var(--border);
+      min-height: 210px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-media img {
+      width: 100%;
+      height: auto;
+      max-height: 230px;
+      object-fit: contain;
+      border-radius: 6px;
+      display: block;
+      border: 1px solid var(--border);
+      transition: all 0.35s ease;
+    }
+
+    .project-media img:hover {
+      transform: scale(1.03);
+    }
+
+    @media (max-width: 780px) {
+      .project-media {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+
+    .project-info {
+      padding: 28px 30px;
+    }
+
+    .project-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--amber);
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .project-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .project-info p {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      margin-bottom: 14px;
+    }
+
+    .project-info ul {
+      list-style: none;
+      margin-bottom: 6px;
+    }
+
+    .project-info ul li {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 7px;
+    }
+
+    .project-info ul li::before {
+      content: "›";
+      position: absolute;
+      left: 0;
+      color: var(--blue-bright);
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .project-stack span {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      padding: 4px 11px;
+      border-radius: 4px;
+      transition: all 0.25s ease;
+    }
+
+    .project-stack span:hover {
+      border-color: var(--blue-bright);
+      color: var(--blue-bright);
+    }
+
+    /* ===== LOG MOCK ===== */
+    .log-mock {
+      width: 100%;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      overflow: hidden;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .log-mock .terminal-bar {
+      padding: 8px 14px;
+    }
+
+    .log-mock .log-body {
+      padding: 16px 18px;
+      color: var(--text-dim);
+    }
+
+    .log-mock .log-body div {
+      padding: 3px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      animation: logFade 0.4s ease;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .log-mock .log-body div:last-child {
+      border-bottom: none;
+    }
+
+    .log-mock .ok {
+      color: var(--green);
+    }
+
+    .log-mock .warn {
+      color: var(--amber);
+    }
+
+    .log-mock .alert {
+      color: var(--red);
+    }
+
+    /* ===== CERTIFICATIONS ===== */
+    .cert-featured {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 0;
+      background: var(--panel);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      transition: all 0.35s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .cert-featured:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 50px rgba(62, 127, 193, 0.10);
+    }
+
+    @media (max-width: 780px) {
+      .cert-featured {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cert-featured .cf-media {
+      background: var(--bg-alt);
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--border);
+      min-height: 170px;
+    }
+
+    .cert-featured .cf-media img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      border-radius: 6px;
+      display: block;
+      border: 1px solid var(--border);
+      transition: all 0.35s ease;
+    }
+
+    .cert-featured .cf-media img:hover {
+      transform: scale(1.03);
+    }
+
+    @media (max-width: 780px) {
+      .cert-featured .cf-media {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+
+    .cert-featured .cf-info {
+      padding: 28px 30px;
+    }
+
+    .cf-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--amber);
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .cf-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .cf-meta {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+
+    .certs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .cert {
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 20px 22px;
+      background: var(--panel);
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .cert:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(62, 127, 193, 0.08);
+    }
+
+    .cert-name {
+      font-weight: 600;
+      font-size: 0.98rem;
+      margin-bottom: 6px;
+    }
+
+    .cert-meta {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* ===== CONTACT PANEL ===== */
+    .contact-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 28px;
+      flex-wrap: wrap;
+      background: var(--panel);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 36px 40px;
+      transition: all 0.35s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-panel:hover {
+      border-color: var(--blue);
+      box-shadow: 0 12px 50px rgba(62, 127, 193, 0.10);
+    }
+
+    .contact-panel h2 {
+      margin-bottom: 8px;
+    }
+
+    .contact-panel p {
+      color: var(--text-muted);
+      max-width: 440px;
+    }
+
+    .cta-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 14px;
+      align-items: flex-end;
+    }
+
+    @media (max-width: 600px) {
+      .cta-list {
+        align-items: flex-start;
+      }
+
+      .contact-panel {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 26px 22px;
+      }
+    }
+
+    .cta-list a {
+      color: var(--text);
+      border-bottom: 1px solid var(--border-strong);
+      padding-bottom: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .cta-list a:hover {
+      color: var(--blue-bright);
+      border-color: var(--blue-bright);
+      text-decoration: none;
+    }
+
+    .cta-list a::after {
+      display: none;
+    }
+
+    .cta-list .k {
+      color: var(--text-dim);
+      margin-right: 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 26px 0;
+      margin-top: 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--blue);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes logFade {
+      from {
+        opacity: 0;
+        transform: translateX(-6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== ADDITIONAL INTERACTIVE TOUCHES ===== */
+    .glow-border {
+      position: relative;
+    }
+
+    .glow-border::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: 10px;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--blue-bright), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .glow-border:hover::before {
+      opacity: 1;
+    }
+
+    .pulse-ring {
+      animation: pulseRing 3s ease-in-out infinite;
+    }
+
+    @keyframes pulseRing {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(95, 166, 227, 0.15);
+      }
+
+      50% {
+        box-shadow: 0 0 0 12px rgba(95, 166, 227, 0);
+      }
+    }
+
+    /* ===== RESPONSIVE TWEAKS (للموبايل) ===== */
+    @media (max-width: 600px) {
+      .avatar {
+        width: 120px;
+        /* بنزل الحجم على الموبايل عشان مياخدش الشاشة كلها */
+        height: 120px;
+      }
+
+      .hero-top>div:last-child {
+        margin-left: 0;
+        text-align: center;
+      }
+
+      .hero-top {
+        justify-content: center;
+      }
+
+      .wrap {
+        padding: 0 16px;
+      }
+
+      .panel-body {
+        padding: 16px 18px;
+      }
+
+      .project-info {
+        padding: 20px 18px;
+      }
+
+      .cert-featured .cf-info {
+        padding: 20px 18px;
+      }
+
+      .contact-panel {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- MOVING LINES (CYBER BACKGROUND) -->
+  <div class="l1"></div>
+  <div class="l2"></div>
+  <div class="l3"></div>
+
+  <!-- SCANLINE -->
+  <div class="scanline"></div>
+
+  <!-- HEADER -->
+  <header>
+    <nav>
+      <div class="brand"><span class="dot"></span> khaled@blueteam:~$</div>
+      <div class="navlinks" id="navlinks">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#certs">Certifications</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="navtoggle" id="navtoggle" aria-label="Toggle navigation">☰</button>
+    </nav>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <div class="wrap">
+
+    <!-- HERO -->
+    <section class="hero" style="border-top:none;">
+      <div class="hero-top">
+        <div class="avatar"><img src="assets/profile.jpeg" alt="Khaled Ashraf Elhanafi"></div>
+        <div>
+          <div class="status-line"><span class="dot"></span> STATUS: available for SOC / cybersecurity roles</div>
+          <h1 class="name">Khaled Ashraf Elhanafi</h1>
+          <div class="role">Cyber Security Analyst — Blue Team, SOC Operations &amp; Threat Detection</div>
+        </div>
+      </div>
+
+      <div class="hero-grid">
+        <div class="panel glow-border">
+          <div class="panel-head">summary.txt <span class="badge">v1.0</span></div>
+          <div class="panel-body">
+            <p class="summary-text">SOC Analyst with a solid foundation in cyber security, networking, and threat
+              detection, backed by CCNA and CCNP Enterprise certification. Hands-on with routing, switching, and network
+              security through Cisco Packet Tracer and GNS3, and building practical blue-team skills through SIEM tools,
+              log analysis, and incident response labs. Focused on identifying and responding to threats with clear,
+              structured analysis.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-head">
+        <h2>About <span class="highlight">Me</span></h2>
+        <span class="counter">#01</span>
+      </div>
+      <div class="terminal pulse-ring">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <div class="terminal-body">
+          <div class="cmd-line"><span class="prompt">$</span> whoami</div>
+          <p>I'm a Cybersecurity-focused professional with a strong background in networking, SOC operations, and
+            incident response. My experience spans CCNA and CCNP Enterprise networking, alongside hands-on cybersecurity
+            training focused on threat detection, security monitoring, log analysis, and incident investigation.
+
+            I work with TryHackMe and CyberDefenders to develop practical skills through real-world security scenarios
+            and labs. I also have a foundation in C++, Python, HTML, CSS, and JavaScript, giving me a broader
+            understanding of how systems are built, connected, and secured.
+
+            I'm passionate about cybersecurity, problem-solving, and continuous learning, with a focus on turning
+            technical knowledge into practical security solutions and clearly documented investigations.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-head">
+        <h2>Skills <span class="highlight">&amp; Expertise</span></h2>
+        <span class="counter">#02</span>
+      </div>
+      <div class="skill-groups">
+        <div class="skill-group">
+          <h3>Networking</h3>
+          <div class="tags">
+            <span class="tag">TCP/IP</span><span class="tag">VLANs</span><span class="tag">Routing &amp;
+              Switching</span>
+            <span class="tag">DNS</span><span class="tag">DHCP</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Cybersecurity &amp; SOC</h3>
+          <div class="tags">
+            <span class="tag">SOC Monitoring</span><span class="tag">SIEM</span><span class="tag">Incident
+              Response</span>
+            <span class="tag">Network Security</span><span class="tag">Log Analysis</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Tools &amp; Platforms</h3>
+          <div class="tags">
+            <span class="tag">Wireshark</span><span class="tag">Nmap</span><span class="tag">Wazuh</span>
+            <span class="tag">Splunk</span><span class="tag">Sysmon</span><span class="tag">Windows Event Viewer</span>
+            <span class="tag">TryHackMe</span><span class="tag">CyberDefenders</span><span class="tag">Windows /
+              Linux</span>
+          </div>
+        </div>
+      </div>
+      <div class="soft-skills">
+        <ul>
+          <li>Analytical thinking with a strong focus on problem-solving</li>
+          <li>Collaborative team player within security operations teams</li>
+          <li>Adaptable and committed to continuous learning in a fast-evolving threat landscape</li>
+          <li>Clear, structured communicator — able to document findings effectively</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="section-head">
+        <h2>Experience <span class="highlight">&amp; Education</span></h2>
+        <span class="counter">#03</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-content">
+            <div class="tl-meta">Since July 2025</div>
+            <div class="tl-title">Cyber Security Incident Response Analyst — Infrastructure &amp; Security Track</div>
+            <div class="tl-org">Digital Egypt Pioneers Initiative (DEPI)</div>
+            <ul>
+              <li>Training in SOC operations and incident response as part of a structured cybersecurity track</li>
+              <li>Practicing hands-on threat detection and analysis through TryHackMe and CyberDefenders labs</li>
+              <li>Building practical skills in identifying, investigating, and responding to security incidents</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-content">
+            <div class="tl-meta">Expected 2027</div>
+            <div class="tl-title">B.Sc. Computer Science</div>
+            <div class="tl-org">Misr Higher Institute for Engineering and Technology (MET) — Fourth-year student</div>
+            <ul>
+              <li>Solid foundation in core computer science and networking concepts</li>
+              <li>Hands-on programming skills in C++ and Python, plus web development with HTML, CSS, and JavaScript
+              </li>
+              <li>Focused on network security, SOC operations, and Linux to pursue a career as a SOC Analyst</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-head">
+        <h2>Practical Experience <span class="highlight">— Labs &amp; Projects</span></h2>
+        <span class="counter">#04</span>
+      </div>
+
+      <div class="project">
+        <div class="project-media">
+          <img src="assets/network-project.png" alt="Enterprise network topology diagram built in Cisco Packet Tracer">
+        </div>
+        <div class="project-info">
+          <div class="project-tag">FINAL TRAINING PROJECT</div>
+          <div class="project-title">Enterprise Network Topology Design</div>
+          <p>Designed and configured a multi-site enterprise network in Cisco Packet Tracer and GNS3, connecting several
+            routers and switches into a single routed topology.</p>
+          <ul>
+            <li>Segmented traffic into multiple VLANs (10, 20, 100, 200) for department-level isolation</li>
+            <li>Configured inter-VLAN routing through a multilayer switch to connect segmented networks</li>
+            <li>Set up routing between multiple routers across distinct subnets to link separate sites</li>
+            <li>Applied core network security and addressing configuration across the topology</li>
+          </ul>
+          <div class="project-stack">
+            <span>Cisco Packet Tracer</span><span>GNS3</span><span>VLANs</span><span>Inter-VLAN Routing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="project-media">
+          <div class="log-mock">
+            <div class="terminal-bar"><span></span><span></span><span></span></div>
+            <div class="log-body">
+              <div class="ok">[OK] alert triaged — source 10.0.4.12</div>
+              <div>[LOG] auth failure x5 — host WIN-SRV02</div>
+              <div class="warn">[WARN] suspicious process spawned</div>
+              <div>[LOG] parsing sysmon event id 1</div>
+              <div class="ok">[OK] IOC matched — investigating</div>
+              <div>[LOG] correlating events in SIEM</div>
+              <div class="alert">[ALERT] outbound traffic to unknown IP</div>
+              <div class="ok">[OK] incident documented &amp; closed</div>
+            </div>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-tag">HANDS-ON LABS</div>
+          <div class="project-title">SOC Level 1 — Detection &amp; Incident Response Labs</div>
+          <p>Completed hands-on SOC Level 1 labs on TryHackMe and CyberDefenders, working through realistic monitoring
+            and investigation scenarios.</p>
+          <ul>
+            <li>Analyzed logs and alerts to identify indicators of compromise</li>
+            <li>Practiced triaging and investigating simulated security incidents end-to-end</li>
+            <li>Used SIEM and log-analysis tools to trace and document incident timelines</li>
+          </ul>
+          <div class="project-stack">
+            <span>TryHackMe</span><span>CyberDefenders</span><span>SIEM</span><span>Log Analysis</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certs">
+      <div class="section-head">
+        <h2>Courses <span class="highlight">&amp; Certifications</span></h2>
+        <span class="counter">#05</span>
+      </div>
+
+      <div class="cert-featured">
+        <div class="cf-media">
+          <img src="assets/certificate.png" alt="CCNA 200-301 and CCNP Enterprise 350-401 ENCOR certificate">
+        </div>
+        <div class="cf-info">
+          <div class="cf-tag">CERTIFICATE</div>
+          <div class="cf-title">CCNA 200-301 &amp; CCNP Enterprise 350-401 (ENCOR)</div>
+          <div class="cf-meta">Mansoura University — Digital Training Center (DTC)</div>
+          <div class="cf-meta">19 July 2025 – 02 November 2025 · 108 hours · Grade: Excellent</div>
+        </div>
+      </div>
+
+
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="contact-panel">
+          <div>
+            <h2>Let's <span class="highlight">work together</span></h2>
+            <p>Open to SOC Analyst and cybersecurity opportunities — reach out directly or connect on LinkedIn.</p>
+          </div>
+          <div class="cta-list">
+            <a href="mailto:khaledashraff051@gmail.com"><span class="k">email</span>khaledashraff051@gmail.com</a>
+            <a href="tel:+201157139654"><span class="k">phone</span>+20 115 713 9654</a>
+            <a href="https://www.linkedin.com/in/khaled-ashraf777" target="_blank" rel="noopener"><span
+                class="k">linkedin</span>/in/khaled-ashraf777</a>
+          </div>
+        </div>
+      </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:10px;">
+      <span>© 2026 Khaled Ashraf Elhanafi</span>
+      <span>Minsoura, Mit Ghamr, Egypt</span>
+    </div>
+  </footer>
+
+  <!-- NAV TOGGLE -->
+  <script>
+    const toggle = document.getElementById('navtoggle');
+    const links = document.getElementById('navlinks');
+    toggle.addEventListener('click', () => {links.classList.toggle('open');});
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+  </script>
+
+</body>
+
+</html>
